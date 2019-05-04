@@ -1,0 +1,333 @@
+\documentclass[12pt]{article}
+
+\usepackage{answers}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\renewcommand{\rmdefault}{ptm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+ 
+\newenvironment{theorem}[1][Theorem.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{proposition}[1][Proposition.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{lemma}[1][Lemma.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}[2][Solution.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[1][Question.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{corollary}[1][Corollary.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{hw}[2][HW.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+%this next part is my footnote symbol
+\usepackage[symbol*]{footmisc}
+\DefineFNsymbolsTM{myfnsymbols}{% def. from footmisc.sty "bringhurst" symbols
+  \textasteriskcentered *
+  \textdagger    \dagger
+  \textdaggerdbl \ddagger
+  \textsection   \mathsection
+  \textbardbl    \|%
+  \textparagraph \mathparagraph
+}%
+\setfnsymbol{myfnsymbols}
+
+\usepackage{mathptmx}
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+\title{Point-wise Convergence}
+\author{Alvis Zhao}
+\makeatletter
+\hfil\parbox[t]{\textwidth}{\Large\bfseries\@title\\[0.5ex]\normalsize\bfseries\@author\\[0.5ex]\@date}\par
+\makeatother
+
+\section*{Point-wise Convergence}
+Fourier series is defined to be \[ \sum\limits\hat{f}(\theta)e^{in\theta}
+\]
+with partial sums
+\[S_Nf = \sum\limits_{-N}^N\hat{f}(\theta)e^{in\theta}
+\]
+Where the Fourier coefficient for $f \in L^1(\mathbb{T})$, $\mathbb{T} = [-\pi,\pi ]$ is defined by \[ \hat{f} = \frac{1}{2\pi}\int_\mathbb{T}f(\theta)e^{-in\theta}d\theta\]
+To have a nicer form of the $S_Nf$ to work with, we want write it as the convolution of $f$ with Dirichlet kernel $D_N(\theta)= \sum_{-N}^Ne^{in\theta}$ by next proposition.
+
+The convolution of two $L^1$ function is defined by 
+\[
+(f*g)(\theta)=\frac{1}{2\pi}\int_{\mathbb{T}}f(\phi)g(\theta-\phi)d\phi
+\]
+Following discussions will use Lebesgue's Dominated Convergence Theorem which is stated here without providing proof.
+\begin{theorem}
+\textit{Dominated convergence theorem}.
+Let ${f_n}$ be a sequence in $L^1$ such that $f_n \rightarrow f$ a.e., and there exists a non-negative $g\in L^1$ such that $|f_n| \leqslant g$ for all n. Then $f\in L^1$ and $\int f = \lim_{n\rightarrow \infty}\int f_n$.
+\end{theorem}
+
+\begin{proposition}
+Suppose that $\sum_{n\in\mathbb{Z}}|A_n| < \infty$ and we have an absolutely convergent Fourier series $K(\theta) = \sum_{n\in\mathbb{Z}}A_ne^{in\theta}$. Then for any $f \in L^1(\mathbb{T})$ we have \[(f*K)(\theta)=\sum\limits_{n\in\mathbb{Z}}A_n\hat{f}(n)e^{in\theta}\]
+\end{proposition}
+\begin{proof}
+\[
+f(\theta-\phi)K(\phi) = \sum A_ne^{in\phi}f(\theta-\phi)
+\]
+To apply  dominated convergence theorem, we need to check the RHS converges a.e. and bounded by a integrable function.
+Since $f \in L^1$, $|f| \in L^1$, $K$ is bounded by $|\sum A_n|$, this series is bounded by $|f| |\sum A_n|$ and converges by assumption.
+Thus, 
+\begin{align*}
+\int_{\mathbb{T}} \sum A_ne^{in\phi}f(\theta-\phi) &= \sum A_n\int_{\mathbb{T}} e^{in\phi}f(\theta-\phi)d\phi \\
+&= \sum A_n\int_{\mathbb{T}} e^{in\phi}f(\theta-\phi)d\phi \\
+&= \sum A_n\int_{\mathbb{T}} e^{in(\theta-\psi)}f(\psi)d\psi \\
+&= \sum A_n\int_{\mathbb{T}} e^{in\theta}e^{-in\psi}f(\psi)d\psi \\
+&= 2\pi \sum A_n \hat{f}(n) e^{in\theta}
+\end{align*}
+\end{proof}
+Let $1_{[-N,N]}(n)$ be the indicator function, the Dirichlet Kernel $(D_Nf) = \sum\limits_{-N}^{N}$, above proposition applied to $S_Nf = \sum1_{[-N,N]}(n)\hat{f}(n)e^{in\theta}$, we have \[S_Nf(\theta) = (D_N*f)(\theta)\]
+\begin{lemma}
+Dirichlet kernel can be equivalently expressed as \[D_N(\theta) = \frac{\sin(N+\frac{1}{2})(\theta)}{\sin(\theta/2)}\ \ \ \ \theta \neq 0, \pm 2\pi ...\]
+\end{lemma}
+\begin{proof}
+This is proved by calculating the finite sum. Recall that $\sum_{0}^{N} ar^n = a\frac{1-r^{N+1}}{1-r}$
+Let $r = e^{i\theta}$, $a = r^{-n}$
+\begin{align*}
+\sum\limits_{-N}^{N} r^n
+&= r^{-N}\frac{1-r^{2N+1}}{1-r} \\
+&= \frac{r^{-N-1/2}}{r^{-N-1/2}} r^{-N}\frac{1-r^{2N+1}}{1-r}\\
+&=  \frac{r^{-N-1/2}-r^{N+1/2}}{r^{-1/2}-r^{1/2}} \\
+\end{align*}
+Substitute $e^{i\theta}$ back, and use $\sin(x)=\frac{e^{ix}-e^{-ix}}{2i}$ we have
+\begin{align*}
+\sum\limits_{-N}^{N} e^{in\theta} &= \frac{e^{(-N-1/2)i\theta}-e^{(N+1/2)i\theta}}{e^{(-1/2)i\theta}-e^{(1/2)i\theta}} \\
+&= \frac{-2i\sin((N+1/2)\theta)}{-2i\sin(\theta/2)} \\
+&= \frac{\sin(N+1/2)(\theta)}{\sin(\theta/2)}
+\end{align*}
+\end{proof}
+Thus, partial sums can be rewritten as 
+\[
+S_Nf = \frac{1}{2\pi}\int_{\mathbb{T}}\frac{\sin(N+\frac{1}{2})(\phi)}{\sin(\phi/2)}f(\theta -\phi)d\phi
+\]
+A fundamental tool is given by the next theorem.
+\begin{theorem}{\it Riemann Lebesgue Lemma.}
+For any $f\in L^1(\mathbb{T})$, $\lim_{|n| \rightarrow \infty}\hat{f}(n) = 0$.
+\end{theorem}
+\begin{proof}
+We first make the change of variable $\phi = \theta + \pi/n$, the interval doesn't change since for periodic functions $\int_a^{a+2\pi}f(x)dx = \int_0^{2\pi}f(x)dx$. Thus, we have
+\begin{align*}
+2\pi\hat{f}(n) &= \int_{\mathbb{T}}f(\theta)e^{-in\theta}d\theta \\
+&= \int_{\mathbb{T}}f(\phi - \pi/n)e^{-in\phi - \pi/n}d\phi \\
+&= \int_{\mathbb{T}}f(\phi - \pi/n)e^{-in\phi}e^{-i\pi}d\phi \\
+&= -\int_{\mathbb{T}}f(\phi - \pi/n)e^{-in\phi}d\phi \\
+\end{align*}
+Adding above equation to $2\pi\hat{f}(n) = \int_{\mathbb{T}}f(\phi)e^{-in\phi}d\phi$, we have
+\[
+4\pi\hat{f}(n) =\int_{\mathbb{T}}(f(\phi - \pi/n)-f(\phi))e^{-in\phi}d\theta
+\]
+If $f$ is continuous on $\mathbb{T}$, $f$ is uniformly continuous on $\mathbb{T}$. Thus $f(\phi - \pi/n)-f(\phi) \rightarrow 0$ as $|n| \rightarrow 0$ uniformly, hence $\hat{f}(n) \rightarrow 0$. \newline
+For any $f \in L^1$, we find $g$ continuous such that $|f - g|_{L^1} = \frac{1}{2\pi}\int|f(x)-g(x)|dx < \epsilon$ for any $\epsilon > 0$. By linearity, we have
+\[
+\hat{f}(n) = \hat{g}(n) + (\widehat{f-g})(n)
+\]
+We already showed $\hat{g}(n) \rightarrow 0$. Also 
+\begin{align*}
+|(\widehat{f-g})(n)| &= |\frac{1}{2\pi}\int_{\mathbb{T}}(f(\theta)-g(\theta))e^{-in\theta}d\theta| \\
+&\leqslant \frac{1}{2\pi}\int_{\mathbb{T}}|f(\theta)-g(\theta)||e^{-in\theta}|d\theta \\
+&\leqslant \epsilon
+\end{align*}
+Thus $\hat{f}(n) \leqslant \epsilon$ completing this proof.
+\end{proof}
+Now we are in the position to prove point-wise convergence theorems. First, recall that 
+\[
+S_Nf = \frac{1}{2\pi}\int_{\mathbb{T}}\frac{\sin(N+\frac{1}{2})(\phi)}{\sin(\phi/2)}f(\theta -\phi)d\phi
+\]
+We will simplify this equation in two steps: we first replace $\sin(\phi/2)$ by the function $\phi/2$, then replace the domain of integration $\mathbb{T}$ by a small interval around $\phi = 0$.
+Since Dirichlet Kernel is even, we have 
+\[
+S_Nf = \frac{1}{2\pi}\int_{0}^{\pi}(f(\theta -\phi)+f(\theta +\phi))\frac{\sin(N+\frac{1}{2})(\phi)}{\sin(\phi/2)}d\phi
+\]
+Since $\frac{1}{2\pi}\int_{\mathbb{T}}\frac{\sin(N+\frac{1}{2})(\phi)}{\sin(\phi/2)}d\phi = 1$, for any constant $S$,
+\[
+S_Nf - S= \frac{1}{2\pi}\int_{0}^{\pi}(f(\theta -\phi)+f(\theta +\phi) - 2S)\frac{\sin(N+\frac{1}{2})(\phi)}{\sin(\phi/2)}d\phi
+\]
+First consider the function
+\[
+\phi \rightarrow \frac{1}{\sin(\phi/2)}-\frac{2}{\phi}
+\]
+This is bounded and continuous on $[-\pi, \pi]$. Since it is the sum of two continuous functions on $[-\pi,0)$ and $(0,\pi]$. Also, by l'Hospital's rule, the difference tends to zero at $\phi = 0$, thus it is also continuous at $\phi = 0$. Then boundedness follows. 
+\begin{proposition}
+The following integral goes to zero as $n \rightarrow \infty$ 
+\[
+\int_{0}^{\pi}(f(\theta -\phi)+f(\theta +\phi))(\frac{1}{\sin(\phi/2)}-\frac{2}{\phi})(\sin(N+\frac{1}{2}))\phi d\phi
+\]
+\end{proposition}
+\begin{proof}
+First since $f \in L^1$, $(\frac{1}{sin(2/\pi)}-\frac{2}{\phi})$ is bounded, $F_{\theta}(\phi)$ is $L^1$. Also notice that 
+\[
+\sin(N+\frac{1}{2})\phi = \frac{e^{i(N+\frac{1}{2})\phi} - e^{-i(N+\frac{1}{2})\phi}}{2i} = \frac{e^{iN\phi}e^{\frac{i\phi}{2}} - e^{-iN\phi}e^{\frac{i\phi}{2}}}{2i} 
+\]
+Riemann Lebesgue Lemma implies
+\[
+2\pi\hat{F}_{\theta}(\phi) = \int_{\mathbb{T}}f(\theta -\phi)+f(\theta +\phi))(\frac{1}{\sin(\phi/2)}-\frac{2}{\phi})e^{-iN\phi}d\phi \rightarrow 0
+\]
+Which implies
+\[
+\int_{\mathbb{T}}(f(\theta -\phi)+f(\theta +\phi))(\frac{1}{\sin(\phi/2)}-\frac{2}{\phi})(\sin(N+\frac{1}{2}))\phi d\phi \rightarrow 0
+\]
+since the integrand is an odd function, it tends to zero on $[0,\pi]$, which finishes the proof.
+\end{proof}
+Thus, we have reduced to proving the pointwise convergence of 
+\[
+\lim\limits _{N}\int_{0}^{\pi}(f(\theta -\phi)+f(\theta +\phi) - 2S)\frac{\sin(N+\frac{1}{2})(\phi)}{\phi}d\phi
+\]
+\begin{lemma}
+\[
+\lim\limits _{N}\int_{\delta}^{\pi}(f(\theta -\phi)+f(\theta +\phi) - 2S)\frac{\sin(N+\frac{1}{2})(\phi)}{\phi}d\phi = 0, \ \ \ \  \text{for small $\delta > 0$}
+\]
+\end{lemma}
+\begin{proof}
+Since $\frac{f(\theta -\phi)+f(\theta +\phi) - 2S}{\phi} \in L^1$, Riemann Lebesgue Lemma implies the desired result.
+\end{proof}
+\begin{theorem}
+Let $f \in L^1(\mathbb{T})$, the partial sums $S_Nf(\theta)$ converges to a limit $S$ as $N \rightarrow \infty$ $\Leftrightarrow$ for some $\delta \in (0,\pi)$, we have 
+\begin{align*}
+\lim\limits _{N}\int_{0}^{\delta}(f(\theta -\phi)+f(\theta +\phi) - 2S)\frac{\sin(N+\frac{1}{2})(\phi)}{\phi}d\phi  = 0 \tag{*}
+\end{align*}
+\end{theorem}
+Note: if there exists one such $\delta_0$, then it above holds for all $\delta \in (0,\pi)$ since the integral on the interval from $\delta_0,\delta$ tends to zero by Riemann Lebesgue lemma.
+\begin{theorem} \textit{Dini's theorem.}
+Suppose that $f$ satisfies a Dini condition at $\theta$, meaning that for some $\delta > 0$ and some real number $S$
+\[
+\int_0^{\delta}\frac{|f(\theta+\phi)+f(\theta-\phi)-2S|}{\phi}d\phi < \infty
+\]
+\end{theorem}
+\begin{proof}
+If Dini's condition is satisfied, we apply Riemann Lebesgue lemma to $\frac{|f(\theta+\phi)+f(\theta-\phi)-2S|}{\phi}$ to get  \[
+\lim\limits _{N}\int_{0}^{\delta}(f(\theta -\phi)+f(\theta +\phi) - 2S)\frac{\sin(N+\frac{1}{2})(\phi)}{\phi}d\phi  = 0
+\]
+which by previous theorem implies the pointwise convergence of $S_Nf$.
+\end{proof}
+\begin{corollary}
+Suppose that f satisfies a symmetric Hölder condition at $\theta$, meaning
+\[
+|f(\theta -\phi)+f(\theta +\phi)-2f(\theta)| \leqslant C|\phi|^{\alpha}
+\]
+for $0<\phi<\delta$, where $0<\alpha<1$. Then $\lim_NS_Nf(\theta)=f(\theta)$.
+\end{corollary}
+\begin{proof}
+\begin{align*}
+\int_0^{\delta}\frac{|f(\theta -\phi)+f(\theta +\phi)-2f(\theta)|}{\phi}d\phi &\leqslant \int_0^{\delta}C\phi^{\alpha - 1}d\phi\\
+& =\frac{C}{\alpha}\phi^\alpha\mid_{0}^{\delta}\\
+& =\frac{C}{\alpha}\delta^\alpha\\
+& \leqslant \frac{C\pi}{\alpha}\\
+& < \infty
+\end{align*}
+This shows that Hölder condition implies Dini condition.
+\end{proof}
+Before stating the main theorem, we need to introduce some tools.\\
+\subsection*{Sine Integral}
+Sine integral is defined to be
+\[
+Si(x) = \frac{2}{\pi}\int_{0}^{x}\frac{\sin t}{t}dt \ \ \ \ \text{$0 \leqslant x < \infty$}
+\]
+Sine integral has three properties:
+\begin{itemize}
+\item $Si(0) = 0$, $\lim_{x\rightarrow \infty} Si(x) = 1$.
+\item $Si(x) \leqslant Si(\pi) = 1.18...$ for all $x \geqslant 0$.
+\item $Si(x)$ has local maxima at $\pi$, $3\pi$, ... and local minima at $2\pi$, $4\pi$, ...
+\end{itemize}  
+\begin{proof}
+First note that $\lim_{n\rightarrow\infty} Si(x)$ exists since 
+\[\frac{\pi}{2}\lim_{n\rightarrow\infty} Si(x) = \sum_0^\infty \int_{n\pi}^{(n+1)\pi}\frac{\sin t}{t}\ \ \ \ \text{converges}\]
+To find its value, by Riemann Lebesgue Lemma
+\[
+\lim_{n\rightarrow\infty}\int_{\mathbb{T}} (\frac{1}{\sin(\phi/2)}-\frac{2}{\phi})\sin(n+\frac{1}{2})\phi d\phi = 0
+\]
+And since 
+\[
+\lim_{n\rightarrow\infty}\int_{\mathbb{T}} \frac{\sin(n+\frac{1}{2})\phi}{\sin(\phi/2)}d\phi = \lim_{n\rightarrow\infty}\int_{\mathbb{T}} D_n(\phi)d\phi = 2\pi
+\]
+Also, since the integrand is even, we have 
+\[
+\frac{2}{\pi}\lim_{n\rightarrow\infty}\int_{0}^{\pi}\frac{\sin(n+\frac{1}{2})\phi}{\phi} d\phi = 1
+\]
+The left hand side is equivalent to $Si(n\pi + \frac{\pi}{2})$ by a change of variable $t = x\sin(n+1/2)$, and thus $\lim_{n \rightarrow \infty}Si(n\pi + \frac{\pi}{2}) = 1$.\\
+The second and third properties is simply proved by finding where the derivative equals zero and compare local maxima values.
+\end{proof}
+\subsection*{Facts on Measure Theory}
+We consider half intervals and one side continuous functions in the following discussion. Let h-intervals  denote the half intervals. Here we choose to use $(a,b]$ and right continuous functions. Note that the whole theory is the same if we choose to use $[a,b)$ and left continuous functions.
+\begin{definition}
+We define {\textbf{Lebesgue-Stieltjes measure}} associated to $F$, usually denote this by $\mu_F$, to be \[
+\mu(E) = \inf\{\sum\limits_1^n[F(b_j)-F(a_j)]: E \subset \bigcup_1^{\infty}(a_j,b_j]\}
+\]
+An important measure,  {\textbf{Lebesgue measure}} is the complete measure $\mu_F$ associated to the function $F(x) = x$.
+
+\end{definition}
+\begin{definition}
+If $F: \mathbb{R} \rightarrow \mathbb{C}$ and $x \in \mathbb{R}$. The {\textbf {total variation function}} of f is defined to be
+\[
+T_F(x) = \sup \sum\limits_{i=1}^N |F(x_i)-F(x_{i-1})| \ \ \ \ -\infty = x_0 < x_1<...<x_n=x\ \ n\in \mathbb{N}
+\]
+If $T_F(\infty) = \lim_{N\rightarrow \infty}T_F(x)$ is finite, we say $f$ is of {\textbf{bounded variation}} (on $\mathbb{R}$). We denote the space of all such $F$ by $BV$. $\sup \sum_{i=1}^N |F(x_i)-F(x_{i-1})| \ \ \ \ a = x_0 < x_1<...<x_n=b\ \ n\in \mathbb{N}$ is called the {\textbf {total variation}} of $F$ on $[a,b]$.
+\end{definition}
+\begin{theorem}
+If $F: \mathbb{R} \rightarrow \mathbb{R}$ $F\in BV$ $\Leftrightarrow$ $F$ is the difference of two bounded increasing functions; in particular if $F\in BV$, $F = \frac{1}{2}(T_F+F) - \frac{1}{2}(T_F-F) $
+\end{theorem}
+Since the discontinuities of increasing functions is at most countable, thus we have the following proposition.
+\begin{proposition}
+If $F\in BV$, then the discontinuity of $F$ is at most countable.
+\end{proposition}
+For $F$ of bounded variations, $F = f^+ + f^-$, we assign a signed measure to $F$ by $\mu_F = \mu_{f^+} + \mu_{f^-}$.
+We denote the integral of a function $g$ with respect to the measure $\mu_F$ by $\int gdF$ or $\int g(x)dF(x)$; such integrals are called \textbf{Lebesgue-Stieltjes} integrals.
+\begin{theorem} \textit{Integral by part formula}.
+If $F$ and $G$ are in $NBV$ and at least on of them is continuous, then for $-\infty < a < b < infty$, 
+\[
+\int_{(a,b]}FdG + \int_{(a,b]}GdF = F(b)G(b) - F(a)G(a)
+\]
+\end{theorem} 
+\subsection*{Main Theorem}
+\begin{theorem}
+Suppose that $f$ is of bounded variation on $[\theta - \delta,\theta + \delta]$ for some $\delta > 0$. Then $\lim_NS_Nf(\theta) = \frac{1}{2}[f(\theta + 0)+ f(\theta - 0)].$ ($f(\theta + 0)\equiv \lim_{x\rightarrow \theta^+}f(\theta)$).
+\end{theorem}
+\begin{proof}
+We write $m = N + \frac{1}{2}$, $F(\phi) = \frac{1}{2}(f(\theta+\phi)+f(\theta - \phi))$. $S = F(0 + 0)$; from equation (*) we have
+\[
+S_N - S = \frac{2}{\pi}\int_0^\delta(\frac{f(\theta+\phi)+f(\theta-\phi)}{2}-S)\frac{\sin m\phi}{\phi}d\phi + o
+\]
+Where $o$ denotes the error term when we performed reductions. Also $\frac{2}{\pi}\frac{\sin m\phi}{\phi}d\phi = dSi(m\phi)$, above equation becomes
+\[
+S_N - S = \int_0^\delta(F(\phi)-S)dSi(m\phi) + o
+\]
+On the interval $[0,\delta]$ $Si(x)$ and $f$ is of bounded variation, and $Si(x)$ is continuous. We set $F(\phi) = F(\phi - 0)$ where $F$ is discontinuous at $\phi$. This makes $F$ left continuous. We could do this because $F$ is of bounded variation, and we only redefined countable many points, so set of redefined points has measure zero in $\mu_{Si(m\phi)} = \frac{\sin m\phi}{\phi}\mu_{\phi}$. Integral by part implies:
+\[
+S_N - S = [F(\delta - 0)- S]Si(m\delta) - \int_0^\delta Si(m\phi)dF(\phi) + o
+\]
+$Si(\infty) = 1$ and $Si(x)$ bounded by $Si(\pi)$, so dominated convergence theorem implies:
+\[
+\lim_N \int_0^\delta Si(m\phi)dF(\phi) = \int_0^\delta dF(\theta) = F(\delta) - F(0)
+\]
+Since $F(\phi)$ is continuous at $\phi = 0$, $F(0) = F(0 + 0) = S$, $\lim_N o = 0$.
+\[
+\lim_N S_N - S = [F(\delta - 0)- S] - [F(\delta-0)-S] = 0
+\]
+\end{proof}
+\end{document}

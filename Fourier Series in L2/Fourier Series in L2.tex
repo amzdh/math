@@ -1,0 +1,195 @@
+\documentclass[12pt]{article}
+
+\usepackage{answers}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\renewcommand{\rmdefault}{ptm}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+ 
+\newenvironment{theorem}[1][Theorem.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{proposition}[1][Proposition.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{lemma}[1][Lemma.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}[2][Solution.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[1][Question.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{corollary}[1][Corollary.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{hw}[2][HW.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+%this next part is my footnote symbol
+\usepackage[symbol*]{footmisc}
+\DefineFNsymbolsTM{myfnsymbols}{% def. from footmisc.sty "bringhurst" symbols
+  \textasteriskcentered *
+  \textdagger    \dagger
+  \textdaggerdbl \ddagger
+  \textsection   \mathsection
+  \textbardbl    \|%
+  \textparagraph \mathparagraph
+}%
+\setfnsymbol{myfnsymbols}
+
+\usepackage{mathptmx}
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+\title{Fourier Series in $L^2$}
+\author{Alvis Zhao}
+\makeatletter
+\hfil\parbox[t]{\textwidth}{\Large\bfseries\@title\\[0.5ex]\normalsize\bfseries\@author\\[0.5ex]\@date}\par
+\makeatother
+
+\section*{Fourier Series in $L^2$}
+Let $\mathbb{T} = [0,2\pi]$.
+Define  
+\begin{align*}
+&L^1(\mathbb{T}) = \{f |\ |f|_{L^1} = \frac{1}{2\pi} \int_{\mathbb{T}} |f| < \infty\} \\
+&L^2(\mathbb{T}) = \{f |\ |f|_{L^2} = \frac{1}{2\pi} \int_{\mathbb{T}} |f|^2 < \infty\}
+\end{align*}
+In $L^2(\mathbb{T})$, the inner product is defined by 
+\[
+\langle f,g\rangle = \frac{1}{2\pi}\int_{\mathbb{T}}f(\theta)\bar{g}(\theta)d\theta 
+\]
+If we approximate $f \in L^2$ with $g \in L^2$, we can measure the degree of approximation by the mean square distance
+\[
+\|f-g\| = |f - g|_{L^2} = \langle f-g, f-g \rangle
+\]
+We define the Fourier transform to be 
+\[
+\hat{f}(n) = \frac{1}{2\pi}\int_{\mathbb{T}}f(\theta)e^{-in\theta}d\theta \ \ \ \ \text{where $\mathbb{T} = [0,2\pi]$}
+\]
+We would like to approximate any $f \in L^2$ with trigonometric polynomial $g(\theta) = \sum_{n=-N}^{N}b_ne^{in\theta}$. Then the following calculation shows that the approximation is best when $b_n = \hat{f}(n)$.
+\begin{align}
+|f - g|_{L^2}^2 &= |f|_{L^2}^2 - \langle f,g\rangle - \langle g,f\rangle+ |g|_{L^2}^2 \\
+&= |f|_{L^2}^2 - \sum\limits_{n=-N}^{N}(\hat{f}(n)\bar{b}_n+\bar{\hat{f}}(n)b_n - |b_n|_{L^2}^2 ) \\
+&= \sum\limits_{n=-N}^{N}|b_n - \hat{f}(n)|^2 + |f|_{L^2}^2 - \sum\limits_{n=-N}^{N}|\hat{f}(n)|_{L^2}^2
+\end{align}
+Thus, we have the following proposition.
+\begin{proposition}
+Suppose that $f \in L^2(\mathbb{T})$. Then the minimum mean square is attained when $b_n$ is the Fourier coefficient $b_n = \hat{f}(n)$. The mean square distance is given by:
+\[
+|f - g|_{L^2}^2 = |f|_{L^2}^2 - \sum\limits_{n= -N}^{N}|\hat{f}(n)|^2
+\] 
+\end{proposition}
+In particular, for $N \in \mathbb{Z}^+$, we have the inequality
+\[
+\sum\limits_{n= -N}^{N}|\hat{f}(n)|^2 \leqslant |f|_{L^2}^2
+\] 
+In particular \textit{Bessel's inequality}
+\begin{equation}
+\sum\limits_{n \in \mathbb{Z}}|\hat{f}(n)|^2 \leqslant |f|_{L^2}^2
+\end{equation}
+\begin{lemma}
+For any $f \in L^2(\mathbb{T})$, the Fourier series converges in $L^2(\mathbb{T})$. Let $F$ be its limit, them $\hat{F} = \hat{f}$
+\end{lemma}
+
+\begin{proof}
+We first show that the partial sums $S_Nf = \sum _{-N}^N\hat{f}(n)e^{in\theta}$ is Cauchy by showing that $S_{N^+}f = \sum _{0}^N\hat{f}(n)e^{in\theta}$, thus converges in $L^2$. 
+\[
+\|S_{N^+}f - S_{M^+}f\|^2 = \frac{1}{2\pi}\int_{\mathbb{T}} \lvert S_{N^+}f - S_{M^+} f \lvert^2 = \sum \limits_{M+1}^N\vert \hat{f}(n)\vert^2 \to\ 0 \footnote{By Bessel's Inequality} \ \text{ M, N $\to \infty$}
+\] 
+Similarly we show that $S_{N^+}f$ is Cauchy. 
+$L^2$ is complete $\Rightarrow$ The Fourier series $\sum \hat{f}(n)e^{inx}$ converges. Let $F$ be its limit. It is left to show that $F = f$.
+\[
+2\pi \hat{F}(n) = \int_{\mathbb{T}}(F(\theta)-S_Nf(\theta))e^{-in\theta}d{\theta} + \int_{\mathbb{T}}S_Nf(\theta)e^{-in\theta}d{\theta} \ \ \ \text{}
+\]
+For $N > \vert n \vert$
+ $\int_{\mathbb{T}}S_Nf(\theta)e^{-in\theta}d{\theta} = 2\pi \hat{f}(n)$. Thus,
+\[ \vert \hat{F}(n) - \hat{f}(n) \vert = \int_{\mathbb{T}}(F(\theta)-S_Nf(\theta))e^{-in\theta}d{\theta} \leqslant \|F-S_Nf\|\ \ \   \text{($N > \vert n \vert$)}
+\]
+Let $N \to \infty$, we have $\hat{F} = \hat{f}$
+\end{proof}
+
+Now the following discussions shows that we have $F = f$ a.e.
+\begin{proposition} {Trigonometric polynomials are dense in $L^2([0.2\pi])$.} (trig polynomials by def: $\sum_{-N}^{N}a_ne^{in\theta}$ $a \in \mathbb{C}$, dense: any $f \in L^2$ his a limit($L^2$) of trig polynomial) (Hint: use Stone -Weierstrass Thm\footnote{\textit{page165 Rudin}, Walter \textit{Principles of Mathematical Analysis}})
+\end{proposition}
+
+\begin{proof}
+First we notice that trigonometric polynomials do not separate points since $g(0) = g(2\pi)$ for all trigonometric polynomial $g$. Thus, we perform a change of variable and apply Stone -Weierstrass Thm to the unit circle.
+
+Let $c(x) = \sum_{-N}^{N}b_nx^n$ where $x = e^{in\theta}$. $\theta \in [0,2\pi]$. Then apply Stone-Weierstrass Theorem on $c$ implies for every continuous function $g$ defined on the unit circle, there exists a sequence of trigonometric polynomials $f_n$ converges to $g$ uniformly. 
+\[
+\|g-f_n\| \leqslant \epsilon/2
+\]
+Since continuous functions are dense in $L^2$. For any $f \in L^2([0,2\pi])$
+\[
+\|f-g\| \leqslant \epsilon/2
+\]
+Triangle inequality implies
+\[
+\|f-f_n\| \leqslant \|f-g\| + \|g-f_n\| \leqslant \epsilon
+\]
+\end{proof}
+
+\begin{proposition} For $f \in L^2([0,2\pi])$, suppose $\hat{f}(n) = 0$ $\forall n $, then $f \equiv 0$ in $L^2$. (using Trig polynomials are dense in $L^2([0,2\pi])$)
+\end{proposition}
+
+\begin{proof}
+Since $\hat{f}(n) = 0$ for all $n$, $\hat{f}(n) = (f,e^{in\theta})_{L^2} = 0$ where $ (\cdot, \cdot)$ is the inner product on $L^2$. For any $g \in L^2$, we can pick $g_n$ be the sequence of trig polynomials that converges to $g$, then for any $\epsilon > 0$, $\exists N$ st. for all $n > N$, $|g-g_n|_{L^2} < \epsilon$, then
+\begin{align*}
+|(f,g-g_n)| \leqslant |f|_{L^2}|g-g_n|_{L^2} \leqslant \epsilon |f|_{L^2}
+\end{align*}
+So for all $g \in L^2$, $|(f,g-g_n)| = |( f,g ) -(  f,g_n ) |= |( f,g )| \leqslant \epsilon |f|_{L^2}$. \\
+Take $g = f$,  $|f|_{L^2}^2=( f,f )\leqslant \epsilon |f|_{L^2}$ $\Rightarrow$ $|f|_{L^2} \leqslant \epsilon$, Thus, $f \equiv 0$ a.e.
+\end{proof}
+If $\hat{F}=\hat{f}$, $\hat{F}-\hat{f} = \widehat{F-f} = 0  \Rightarrow F-f \equiv 0$ a.e. 
+We conclude above discussion with the following main theorem.
+\begin{theorem} \textit{Parseval's theorem}
+For any $f \in L^2(\mathbb{T})$, the Fourier series converges to $f$ in $L^2(\mathbb{T})$ and we have Parseval's identity: 
+\begin{equation}
+\frac{1}{2\pi} \int_{-\pi}^{\pi} \lvert f(\theta) \lvert ^2 d\theta =  \sum\limits_{n \in \mathbb{Z}} \lvert \hat{f}(n)\lvert ^2
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $S_Nf \rightarrow f$, by definition $|S_Nf - f|_{L^2} \rightarrow 0$. By reverse triangle inequality $||S_Nf|_{L^2}-|f|_{L^2}| \leqslant |S_Nf - f|_{L^2}$. Therefore, $|S_Nf|_{L^2} \rightarrow |f|_{L^2}$.
+\end{proof}
+
+\subsection* {An alternative approach to $\hat{F} =\hat{f} \Rightarrow F = f$ a.e.}
+We first show that $L^2$ periodic functions is also $L^1$, then proposition implies the wanted result.
+
+\begin{proposition} If $f \in L^2([0,2\pi])$, then$ f \in L^1([0,2\pi])$ (Hint: Cauchy-Schwartz) 
+\end{proposition}
+
+\begin{proof}
+\[
+\| f \| _{L^1} = \int_0^{2\pi}\vert f \vert \leqslant \int_0^{2\pi}\vert 1 \vert \cdot \vert f \vert \leqslant \| 1 \| _{L^2} \cdot \| f \| _{L^2}  = \| f \| _{L^2}
+\]
+
+\textbf{Remark}: Is it true if $f \in L^2(\mathbb{R})$ then $f \in L^1(\mathbb{R})$? In general no, $\frac{1}{1 + |x|}$ in $L^2$ but not in $L^1$.
+\end{proof}
+
+\begin{proposition}
+Suppose that $f, g \in L^1(\mathbb{T})$ have the property that $\hat{f}(n) = \hat{g}(n)$, for all $n \in \mathbb{Z}$. Then $f = g$ a.e. 
+\end{proposition}
+\begin{proof}
+{\textit page17, Pinsky}
+\end{proof}
+
+\end{document}
